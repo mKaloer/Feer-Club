@@ -1,0 +1,7 @@
+<h1>Beers</h1>
+<a href="{% url 'beer_create' %}">Add new beer</a>
+<ul>
+{% for beer in beer_list %}
+  <li><a href="{% url 'beer_detail' beer.id %}">Detail</a> | <a href="{% url 'beer_update' beer.id %}">Edit</a> | <a href="{% url 'beer_delete' beer.id %}">Delete</a> | {{ beer.name }}</li>
+{% endfor %}
+</ul>
