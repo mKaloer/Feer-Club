@@ -1,7 +1,5 @@
-{% load bootstrap3 %}
-{% bootstrap_css %}
+{% extends "feer/base.html" %}
 
-<h1>Feer</h1>
-
-<a href="{% url 'beer_list' %}">Beers</a>
-<a href="{% url 'order_list' %}">Orders</a>
+{% block content %}
+<h1>Manage them beers!</h1>
+{% endblock content %}

@@ -7,10 +7,16 @@ from django.core.urlresolvers import reverse_lazy
 from .models import Beer, Order, OrderItem
 
 def index(request):
-    return render(request, 'feer/index.html')
+    context = {'nav_active': 'home'}
+    return render(request, 'feer/index.html', context)
 
 class BeerList(ListView):
     model = Beer
+
+    def get_context_data(self, **kwargs):
+        context = super(BeerList, self).get_context_data(**kwargs)
+        context['nav_active'] = 'beers'
+        return context
 
 class BeerDetail(DetailView):
     model = Beer
@@ -31,6 +37,11 @@ class BeerDelete(DeleteView):
 
 class OrderList(ListView):
     model = Order
+
+    def get_context_data(self, **kwargs):
+        context = super(OrderList, self).get_context_data(**kwargs)
+        context['nav_active'] = 'orders'
+        return context
 
 class OrderDetail(DetailView):
     model = Order
