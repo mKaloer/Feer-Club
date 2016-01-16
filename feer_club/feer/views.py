@@ -49,11 +49,11 @@ class OrderDelete(DeleteView):
 
 class OrderItemCreate(CreateView):
     model = OrderItem
-    fields = ['beer', 'order_list', 'quantity', 'participants', 'volume_per_participant']
+    fields = ['beer', 'order_list', 'quantity', 'cost', 'participants', 'volume_per_participant']
 
 class OrderItemUpdate(UpdateView):
     model = OrderItem
-    fields = ['beer', 'order_list', 'quantity', 'participants', 'volume_per_participant']
+    fields = ['beer', 'order_list', 'quantity', 'cost', 'participants', 'volume_per_participant']
 
 class OrderItemDelete(DeleteView):
     model = OrderItem
