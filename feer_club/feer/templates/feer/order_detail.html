@@ -33,7 +33,7 @@
       <td>{{ item.cost }}</td>
       <td>{{ item.participants }}</td>
       <td>{{ item.volume_per_participant }}</td>
-      <td>Some date</td>
+      <td>{{ item.drink_date }}</td>
       <td><a href="{% url 'orderitem_update' item.id %}">Edit</a></td>
       <td><a href="{% url 'orderitem_delete' item.id %}">Delete</a></td>
     </tr>

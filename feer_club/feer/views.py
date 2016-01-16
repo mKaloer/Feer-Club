@@ -65,7 +65,7 @@ class OrderDelete(DeleteView):
 
 class OrderItemCreate(CreateView):
     model = OrderItem
-    fields = ['beer', 'order', 'quantity', 'participants']
+    fields = ['beer', 'order', 'quantity', 'participants', 'drink_date']
 
     def form_valid(self, form):
         form.instance.cost = form.instance.beer.price * form.instance.quantity
@@ -77,7 +77,7 @@ class OrderItemCreate(CreateView):
 
 class OrderItemUpdate(UpdateView):
     model = OrderItem
-    fields = ['beer', 'order', 'quantity', 'cost', 'participants', 'volume_per_participant']
+    fields = ['beer', 'order', 'quantity', 'participants', 'drink_date']
 
     def form_valid(self, form):
         form.instance.cost = form.instance.beer.price * form.instance.quantity

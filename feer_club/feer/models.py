@@ -26,6 +26,7 @@ class OrderItem(models.Model):
     cost = models.DecimalField(max_digits=6, decimal_places=2)
     participants = models.IntegerField()
     volume_per_participant = models.FloatField()
+    drink_date = models.DateField('drink date')
 
     def __str__(self):
         return str(self.quantity) + 'x ' + self.beer.name
