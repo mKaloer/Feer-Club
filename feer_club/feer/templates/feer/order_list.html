@@ -1,10 +1,28 @@
 {% load bootstrap3 %}
 {% bootstrap_css %}
 
-<h1>Orders</h1>
-<a href="{% url 'order_create' %}">Add new order</a>
-<ul>
-{% for order in order_list %}
-  <li><a href="{% url 'order_update' order.id %}">Edit</a> | <a href="{% url 'order_delete' order.id %}">Delete</a> | {{ order.name }}</li>
-{% endfor %}
-</ul>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Orders
+    <span style="float:right">
+      <a href="{% url 'order_create' %}">Add new order</a>
+    </span>
+  </div>
+
+  <table class="table">
+    <tr>
+      <th>Name</th>
+      <th>Cost</th>
+      <th></th>
+      <th></th>
+    </tr>
+  {% for order in order_list %}
+    <tr>
+      <td><a href="{% url 'order_detail' order.id %}">{{ order.name }}</a></td>
+      <td>{{ order.cost }}</td>
+      <td><a href="{% url 'order_update' order.id %}">Edit</a></td>
+      <td><a href="{% url 'order_delete' order.id %}">Delete</a></td>
+    </tr>
+  {% endfor %}
+  </table>
+</div>

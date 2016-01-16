@@ -1,0 +1,12 @@
+{% load bootstrap3 %}
+{% bootstrap_css %}
+
+<p><b>Name:</b> {{ beer.name }}</p>
+<p><b>Brewery:</b> {{ beer.brewery }}</p>
+<p><b>Country:</b> {{ beer.country }}</p>
+<p><b>Style:</b> {{ beer.style }}</p>
+<p><b>Alcohol by volume:</b> {{ beer.abv }} %</p>
+<p><b>International bitterness unit:</b> {{ beer.ibu }}</p>
+<p><b>Volume:</b> {{ beer.volume }} ml</p>
+<p><b>Purchase url:<b> <a href="{{ beer.purchase_url }}">{{ beer.purchase_url }}</a></p>
+<p><b>Price:</b> {{ beer.price }}

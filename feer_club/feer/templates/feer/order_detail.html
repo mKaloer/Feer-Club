@@ -1,0 +1,42 @@
+{% load bootstrap3 %}
+{% bootstrap_css %}
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    {{ order.name }}: {{ order.cost }} DKK
+    <span style="float:right">
+      <a href="{% url 'orderitem_create' %}">Add beer to order</a>
+    </span>
+  </div>
+
+  <table class="table">
+    <tr>
+      <th>Quantity</th>
+      <th>Beer</th>
+      <th>Volume (ml)</th>
+      <th>Purchase URL</th>
+      <th>Price per beer</th>
+      <th>Quantity price</th>
+      <th>Participants</th>
+      <th>ml/person</th>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+    </tr>
+  {% for item in order.orderitem_set.all %}
+    <tr>
+      <td>{{ item.quantity }}</td>
+      <td><a href="{% url 'beer_detail' item.beer.id %}">{{ item.beer.name }}</a></td>
+      <td>{{ item.beer.volume }}</td>
+      <td><a href="{{ item.beer.purchase_url }}">Buy here</a></td>
+      <td>{{ item.beer.price }}</td>
+      <td>{{ item.beer.price }}</td>
+      <td>{{ item.participants }}</td>
+      <td>{{ item.volume_per_participant }}</td>
+      <td>Some date</td>
+      <td><a href="{% url 'orderitem_update' item.id %}">Edit</a></td>
+      <td><a href="{% url 'orderitem_delete' item.id %}">Delete</a></td>
+    </tr>
+  {% endfor %}
+  </table>
+</div>

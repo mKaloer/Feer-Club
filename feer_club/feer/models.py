@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-
+from django.core.urlresolvers import reverse
 from django.db import models
 
 class Beer(models.Model):
@@ -27,7 +27,10 @@ class OrderItem(models.Model):
     volume_per_participant = models.FloatField()
 
     def __str__(self):
-        return str(self.quantity) + 'x ' + beer.name
+        return str(self.quantity) + 'x ' + self.beer.name
+
+    def get_absolute_url(self):
+        return reverse('order_detail', kwargs={'pk': self.order_list.pk})
 
 class Order(models.Model):
     name = models.CharField(max_length=512)
@@ -37,3 +40,6 @@ class Order(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('order_detail', kwargs={'pk': self.pk})
