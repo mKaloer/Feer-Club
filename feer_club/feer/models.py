@@ -21,7 +21,7 @@ class Beer(models.Model):
 
 class OrderItem(models.Model):
     beer = models.ForeignKey('Beer')
-    order_list = models.ForeignKey('Order')
+    order = models.ForeignKey('Order')
     quantity = models.IntegerField()
     cost = models.DecimalField(max_digits=6, decimal_places=2)
     participants = models.IntegerField()

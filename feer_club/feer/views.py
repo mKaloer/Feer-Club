@@ -65,30 +65,30 @@ class OrderDelete(DeleteView):
 
 class OrderItemCreate(CreateView):
     model = OrderItem
-    fields = ['beer', 'order_list', 'quantity', 'participants']
+    fields = ['beer', 'order', 'quantity', 'participants']
 
     def form_valid(self, form):
         form.instance.cost = form.instance.beer.price * form.instance.quantity
         form.instance.volume_per_participant = form.instance.beer.volume / form.instance.participants
-        form.instance.order_list.cost += form.instance.cost
-        form.instance.order_list.save()
+        form.instance.order.cost += form.instance.cost
+        form.instance.order.save()
         form.save()
-        return HttpResponseRedirect(reverse_lazy('order_detail', kwargs={'pk': form.instance.order_list.pk}))
+        return HttpResponseRedirect(reverse_lazy('order_detail', kwargs={'pk': form.instance.order.pk}))
 
 class OrderItemUpdate(UpdateView):
     model = OrderItem
-    fields = ['beer', 'order_list', 'quantity', 'cost', 'participants', 'volume_per_participant']
+    fields = ['beer', 'order', 'quantity', 'cost', 'participants', 'volume_per_participant']
 
     def form_valid(self, form):
         form.instance.cost = form.instance.beer.price * form.instance.quantity
         form.instance.volume_per_participant = form.instance.beer.volume / form.instance.participants
-        form.instance.order_list.cost += form.instance.cost
-        form.instance.order_list.save()
+        form.instance.order.cost += form.instance.cost
+        form.instance.order.save()
         form.save()
-        return HttpResponseRedirect(reverse_lazy('order_detail', kwargs={'pk': form.instance.order_list.pk}))
+        return HttpResponseRedirect(reverse_lazy('order_detail', kwargs={'pk': form.instance.order.pk}))
 
 class OrderItemDelete(DeleteView):
     model = OrderItem
 
     def get_success_url(self):
-        return reverse_lazy('order_detail', kwargs={'pk': self.object.order_list.pk})
+        return reverse_lazy('order_detail', kwargs={'pk': self.object.order.pk})
