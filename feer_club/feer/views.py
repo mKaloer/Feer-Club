@@ -72,6 +72,12 @@ class OrderItemUpdate(UpdateView):
     model = OrderItem
     fields = ['beer', 'order_list', 'quantity', 'cost', 'participants', 'volume_per_participant']
 
+    def form_valid(self, form):
+        form.instance.cost = form.instance.beer.price * form.instance.quantity
+        form.instance.volume_per_participant = form.instance.beer.volume / form.instance.participants
+        form.save()
+        return HttpResponseRedirect(reverse_lazy('order_detail', kwargs={'pk': form.instance.order_list.pk}))
+
 class OrderItemDelete(DeleteView):
     model = OrderItem
 
