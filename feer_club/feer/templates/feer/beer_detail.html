@@ -1,6 +1,6 @@
-{% load bootstrap3 %}
-{% bootstrap_css %}
+{% extends "feer/base.html" %}
 
+{% block content %}
 <p><b>Name:</b> {{ beer.name }}</p>
 <p><b>Brewery:</b> {{ beer.brewery }}</p>
 <p><b>Country:</b> {{ beer.country }}</p>
@@ -10,3 +10,4 @@
 <p><b>Volume:</b> {{ beer.volume }} ml</p>
 <p><b>Purchase url:<b> <a href="{{ beer.purchase_url }}">{{ beer.purchase_url }}</a></p>
 <p><b>Price:</b> {{ beer.price }}
+{% endblock content %}

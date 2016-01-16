@@ -1,6 +1,6 @@
-{% load bootstrap3 %}
-{% bootstrap_css %}
+{% extends "feer/base.html" %}
 
+{% block content %}
 <div class="panel panel-default">
   <div class="panel-heading">
     {{ order.name }}: {{ order.cost }} DKK
@@ -40,3 +40,4 @@
   {% endfor %}
   </table>
 </div>
+{% endblock content %}
