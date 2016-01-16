@@ -48,11 +48,16 @@ class OrderDetail(DetailView):
 
 class OrderCreate(CreateView):
     model = Order
-    fields = ['name', 'order_date', 'cost']
+    fields = ['name', 'order_date']
+
+    def form_valid(self, form):
+        form.instance.cost = 0
+        form.save()
+        return HttpResponseRedirect(reverse_lazy('order_list'))
 
 class OrderUpdate(UpdateView):
     model = Order
-    fields = ['name', 'order_date', 'cost']
+    fields = ['name', 'order_date']
 
 class OrderDelete(DeleteView):
     model = Order
@@ -65,6 +70,8 @@ class OrderItemCreate(CreateView):
     def form_valid(self, form):
         form.instance.cost = form.instance.beer.price * form.instance.quantity
         form.instance.volume_per_participant = form.instance.beer.volume / form.instance.participants
+        form.instance.order_list.cost += form.instance.cost
+        form.instance.order_list.save()
         form.save()
         return HttpResponseRedirect(reverse_lazy('order_detail', kwargs={'pk': form.instance.order_list.pk}))
 
@@ -75,6 +82,8 @@ class OrderItemUpdate(UpdateView):
     def form_valid(self, form):
         form.instance.cost = form.instance.beer.price * form.instance.quantity
         form.instance.volume_per_participant = form.instance.beer.volume / form.instance.participants
+        form.instance.order_list.cost += form.instance.cost
+        form.instance.order_list.save()
         form.save()
         return HttpResponseRedirect(reverse_lazy('order_detail', kwargs={'pk': form.instance.order_list.pk}))
 
