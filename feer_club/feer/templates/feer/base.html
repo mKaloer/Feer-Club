@@ -28,6 +28,16 @@
           <li class="{% if nav_active == 'beers' %} active {% endif %}"><a href="{% url 'beer_list' %}">Beers</a></li>
           <li class="{% if nav_active == 'orders' %} active {% endif %}"><a href="{% url 'order_list' %}">Orders</a></li>
         </ul>
+        <div class="navbar-right">
+        {% if not user.is_anonymous %}
+          <p class="navbar-text">Signed in as <b>{{ user }}</b></p>
+        {% endif %}
+        {% if user.is_anonymous %}
+          <a class="btn btn-default navbar-btn" href="{% url 'login' %}">Login</a>
+        {% else %}
+          <a class="btn btn-default navbar-btn" href="{% url 'logout' %}">Logout</a>
+        {% endif %}
+        </div>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
@@ -36,3 +46,4 @@
   {% endblock content %}
   </body>
 </html>
+

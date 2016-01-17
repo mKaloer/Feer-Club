@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import include, url
 from .views import (BeerList, BeerDetail, BeerCreate, BeerUpdate, BeerDelete,
         OrderList, OrderDetail, OrderCreate, OrderUpdate, OrderDelete,
         OrderItemCreate, OrderItemDelete, OrderItemUpdate)
@@ -6,6 +6,7 @@ from .views import (BeerList, BeerDetail, BeerCreate, BeerUpdate, BeerDelete,
 from . import views
 
 urlpatterns = [
+    url('^', include('django.contrib.auth.urls')),
     url(r'^orders/$', OrderList.as_view(), name='order_list'),
     url(r'^order/add/$', OrderCreate.as_view(), name='order_create'),
     url(r'^order/(?P<pk>[-\w]+)/delete/$', OrderDelete.as_view(), name='order_delete'),
