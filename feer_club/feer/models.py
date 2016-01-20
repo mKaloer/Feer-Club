@@ -58,7 +58,7 @@ class Order(models.Model):
                     costs[p.username] += cost
                 else:
                     costs[p.username] = cost
-        return costs
+        return sorted(costs.items())
 
     def __str__(self):
         return self.name
