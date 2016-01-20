@@ -30,7 +30,11 @@
       <td>{{ beer.country }}</td>
       <td>{{ beer.style }}</td>
       <td>{{ beer.abv }}</td>
+    {% if beer.ibu != None %}
       <td>{{ beer.ibu }}</td>
+    {% else %}
+      <td>-</td>
+    {% endif %}
       <td>{{ beer.volume }}</td>
       <td><a href="{{ beer.purchase_url }}">Buy here</a></td>
       <td>{{ beer.price }}</td>

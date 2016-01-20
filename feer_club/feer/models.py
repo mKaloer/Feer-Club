@@ -9,7 +9,7 @@ class Beer(models.Model):
     country = models.CharField(max_length=512)
     style = models.CharField(max_length=512)
     abv = models.FloatField()
-    ibu = models.IntegerField()
+    ibu = models.IntegerField(null=True, blank=True)
     volume = models.IntegerField()
     purchase_url = models.URLField(max_length=512)
     price = models.DecimalField(max_digits=6, decimal_places=2)
