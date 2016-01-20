@@ -6,11 +6,16 @@ from django.views.generic.edit import ModelFormMixin
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from .models import Beer, Order, OrderItem
 
 def index(request):
     context = {'nav_active': 'home'}
     return render(request, 'feer/index.html', context)
+
+@login_required(login_url=reverse_lazy('login'))
+def profile(request):
+    return render(request, 'feer/profile.html')
 
 class BeerList(LoginRequiredMixin, ListView):
     model = Beer

@@ -6,6 +6,7 @@
   {% bootstrap_css %}
   {% bootstrap_javascript jquery=1 %}
     <title>Feer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
 
   <body>
@@ -30,7 +31,7 @@
         </ul>
         <div class="navbar-right">
         {% if not user.is_anonymous %}
-          <p class="navbar-text">Signed in as <b>{{ user }}</b></p>
+          <p class="navbar-text">Signed in as <a href="{% url 'user_profile' %}"><b>{{ user }}</b></a></p>
         {% endif %}
         {% if user.is_anonymous %}
           <a class="btn btn-default navbar-btn" href="{% url 'login' %}">Login</a>
