@@ -11,10 +11,10 @@
       <th>Participant</th>
       <th>To pay</th>
     </tr>
-  {% for item in order.orderitem_set.all %}
+  {% for p, c in order.participant_costs.items %}
     <tr>
-      <td>{{ item.quantity }}</td>
-      <td><a href="{% url 'beer_detail' item.beer.id %}">{{ item.beer.name }}</a></td>
+      <td>{{ p }}</td>
+      <td>{{ c }}</td>
     </tr>
   {% endfor %}
   </table>

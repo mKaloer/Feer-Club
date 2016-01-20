@@ -47,6 +47,19 @@ class Order(models.Model):
     order_date = models.DateField('order date')
     cost = models.DecimalField(max_digits=6, decimal_places=2)
 
+    def participant_costs(self):
+        items = OrderItem.objects.filter(order__id=self.id)
+        costs = {}
+        for item in items:
+            num_of_participants = item.participants.count()
+            for p in item.participants.all():
+                cost = item.cost / num_of_participants
+                if p.username in costs:
+                    costs[p.username] += cost
+                else:
+                    costs[p.username] = cost
+        return costs
+
     def __str__(self):
         return self.name
 
