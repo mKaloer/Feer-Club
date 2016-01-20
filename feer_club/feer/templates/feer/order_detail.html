@@ -21,7 +21,7 @@
 </div>
 <div class="panel panel-default">
   <div class="panel-heading">
-    {{ order.name }}: {{ order.cost }} DKK
+    {{ order.name }}: <b>{{ order.cost }} DKK</b>
     <span style="float:right">
       <a href="{% url 'orderitem_create' %}">Add beer to order</a>
     </span>
