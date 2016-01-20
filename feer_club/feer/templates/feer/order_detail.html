@@ -3,6 +3,24 @@
 {% block content %}
 <div class="panel panel-default">
   <div class="panel-heading">
+    Participants
+  </div>
+
+  <table class="table">
+    <tr>
+      <th>Participant</th>
+      <th>To pay</th>
+    </tr>
+  {% for item in order.orderitem_set.all %}
+    <tr>
+      <td>{{ item.quantity }}</td>
+      <td><a href="{% url 'beer_detail' item.beer.id %}">{{ item.beer.name }}</a></td>
+    </tr>
+  {% endfor %}
+  </table>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
     {{ order.name }}: {{ order.cost }} DKK
     <span style="float:right">
       <a href="{% url 'orderitem_create' %}">Add beer to order</a>
