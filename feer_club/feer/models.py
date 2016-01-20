@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.contrib.auth.models import User
 
 class Beer(models.Model):
     name = models.CharField(max_length=512)
@@ -24,9 +25,15 @@ class OrderItem(models.Model):
     order = models.ForeignKey('Order')
     quantity = models.IntegerField()
     cost = models.DecimalField(max_digits=6, decimal_places=2)
-    participants = models.IntegerField()
+    participants = models.ManyToManyField(User)
     volume_per_participant = models.FloatField()
     drink_date = models.DateField('drink date')
+
+    def participants_abbreviation(self):
+        abbr = ''
+        for user in self.participants.all():
+            abbr += user.username + ', '
+        return abbr.strip(', ')
 
     def __str__(self):
         return str(self.quantity) + 'x ' + self.beer.name

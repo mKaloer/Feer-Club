@@ -8,6 +8,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from .models import Beer, Order, OrderItem
+import logging
+logger = logging.getLogger(__name__)
 
 def index(request):
     context = {'nav_active': 'home'}
@@ -80,18 +82,30 @@ class OrderDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('order_list')
     login_url = reverse_lazy('login')
 
+def order_item_form_valid(self, form):
+    # Subtract old price from order
+    if form.instance.cost is not None:
+        form.instance.order.cost -= form.instance.cost
+    form.instance.cost = form.instance.beer.price * form.instance.quantity
+    form.instance.volume_per_participant = 0
+    # Save so that participants can be referenced
+    form.save()
+    num_of_participants = form.instance.participants.count()
+    form.instance.volume_per_participant = (0 if num_of_participants == 0 else
+        form.instance.beer.volume / num_of_participants)
+    form.instance.order.cost += form.instance.cost
+    form.instance.order.save()
+    form.save()
+    return HttpResponseRedirect(reverse_lazy('order_detail',
+        kwargs={'pk': form.instance.order.pk}))
+
 class OrderItemCreate(LoginRequiredMixin, CreateView):
     model = OrderItem
     fields = ['beer', 'order', 'quantity', 'participants', 'drink_date']
     login_url = reverse_lazy('login')
 
     def form_valid(self, form):
-        form.instance.cost = form.instance.beer.price * form.instance.quantity
-        form.instance.volume_per_participant = form.instance.beer.volume / form.instance.participants
-        form.instance.order.cost += form.instance.cost
-        form.instance.order.save()
-        form.save()
-        return HttpResponseRedirect(reverse_lazy('order_detail', kwargs={'pk': form.instance.order.pk}))
+        return order_item_form_valid(self, form)
 
 class OrderItemUpdate(LoginRequiredMixin, UpdateView):
     model = OrderItem
@@ -99,16 +113,17 @@ class OrderItemUpdate(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('login')
 
     def form_valid(self, form):
-        form.instance.cost = form.instance.beer.price * form.instance.quantity
-        form.instance.volume_per_participant = form.instance.beer.volume / form.instance.participants
-        form.instance.order.cost += form.instance.cost
-        form.instance.order.save()
-        form.save()
-        return HttpResponseRedirect(reverse_lazy('order_detail', kwargs={'pk': form.instance.order.pk}))
+        return order_item_form_valid(self, form)
 
 class OrderItemDelete(LoginRequiredMixin, DeleteView):
     model = OrderItem
     login_url = reverse_lazy('login')
+
+    def delete(self, *args, **kwargs):
+        order_item = self.get_object()
+        order_item.order.cost -= order_item.cost
+        order_item.order.save()
+        return super().delete(*args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy('order_detail', kwargs={'pk': self.object.order.pk})
