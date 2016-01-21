@@ -101,15 +101,16 @@ def order_item_form_valid(self, form):
 
 class OrderItemCreate(LoginRequiredMixin, CreateView):
     model = OrderItem
-    fields = ['beer', 'order', 'quantity', 'participants', 'drink_date']
+    fields = ['beer', 'quantity', 'participants', 'drink_date']
     login_url = reverse_lazy('login')
 
     def form_valid(self, form):
+        form.instance.order = Order.objects.get(pk=self.kwargs['pk'])
         return order_item_form_valid(self, form)
 
 class OrderItemUpdate(LoginRequiredMixin, UpdateView):
     model = OrderItem
-    fields = ['beer', 'order', 'quantity', 'participants', 'drink_date']
+    fields = ['beer', 'quantity', 'participants', 'drink_date']
     login_url = reverse_lazy('login')
 
     def form_valid(self, form):
