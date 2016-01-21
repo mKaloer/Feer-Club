@@ -52,8 +52,8 @@
       <td>{{ item.participants_abbreviation }}</td>
       <td>{{ item.volume_per_participant }}</td>
       <td>{{ item.drink_date }}</td>
-      <td><a href="{% url 'orderitem_update' item.id %}">Edit</a></td>
-      <td><a href="{% url 'orderitem_delete' item.id %}">Delete</a></td>
+      <td><a href="{% url 'orderitem_update' order_pk=order.pk pk=item.pk %}">Edit</a></td>
+      <td><a href="{% url 'orderitem_delete' order_pk=order.pk pk=item.pk %}">Delete</a></td>
     </tr>
   {% endfor %}
   </table>
