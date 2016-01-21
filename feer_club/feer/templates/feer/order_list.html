@@ -13,6 +13,7 @@
     <tr>
       <th>Name</th>
       <th>Cost (DKK)</th>
+      <th>Order date</th>
       <th></th>
       <th></th>
     </tr>
@@ -20,6 +21,7 @@
     <tr>
       <td><a href="{% url 'order_detail' order.id %}">{{ order.name }}</a></td>
       <td>{{ order.cost }}</td>
+      <td>{{ order.order_date }}</td>
       <td><a href="{% url 'order_update' order.id %}">Edit</a></td>
       <td><a href="{% url 'order_delete' order.id %}">Delete</a></td>
     </tr>
