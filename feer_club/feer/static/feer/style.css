@@ -1,0 +1,56 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.hidden-row {
+  padding: 0 !important;
+}
+
+tr.header-row th {
+  border-bottom: none !important;
+}
+
+tr.visible-row td {
+  border-bottom: none !important;
+}
+
+tr.hidden-row td {
+  border-top: none !important;
+}
+
+.beer-info {
+  padding: 10px;
+  background-color: #20202F;
+  max-height: 40px;
+}
+
+.beer-info-list {
+  margin-bottom: 0px;
+  padding-left: 0px;
+}
+
+.beer-info-list li a {
+  color: #fff;
+}
+
+.beer-info-list li a:hover, .beer-info-list li a:active  {
+  text-decoration: none;
+}
+
+.minimal-label {
+  border: 1px solid #fff;
+  color: #fff;
+    background-color: transparent;
+}
+
+.danger {
+  color: #FF2626;
+}
+
+.warning {
+  color: #FF9326;
+}
+
+.table-number {
+  text-align: right;
+}

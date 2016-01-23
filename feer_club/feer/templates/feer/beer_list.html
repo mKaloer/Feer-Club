@@ -9,39 +9,41 @@
     </span>
   </div>
 
-  <table class="table">
-    <tr>
-      <th>Name</th>
-      <th>Brewery</th>
-      <th>Country</th>
-      <th>Style</th>
-      <th>ABV</th>
-      <th>IBU</th>
-      <th>Volume (ml)</th>
-      <th>Purchase URL</th>
-      <th>Price (DKK)</th>
-      <th></th>
-      <th></th>
-    </tr>
-  {% for beer in beer_list %}
-    <tr>
-      <td>{{ beer.name }}</td>
-      <td>{{ beer.brewery }}</td>
-      <td>{{ beer.country }}</td>
-      <td>{{ beer.style }}</td>
-      <td>{{ beer.abv }}</td>
-    {% if beer.ibu != None %}
-      <td>{{ beer.ibu }}</td>
-    {% else %}
-      <td>-</td>
-    {% endif %}
-      <td>{{ beer.volume }}</td>
-      <td><a href="{{ beer.purchase_url }}">Buy here</a></td>
-      <td>{{ beer.price }}</td>
-      <td><a href="{% url 'beer_update' beer.id %}">Edit</a></td>
-      <td><a href="{% url 'beer_delete' beer.id %}">Delete</a></td>
-    </tr>
-  {% endfor %}
+  <table class="table table-hover" style="border-collapse:collapse;">
+    <thead>
+      <tr class="header-row">
+        <th>Name</th>
+        <th>Style</th>
+        <th>Volume (ml)</th>
+        <th>Price (DKK)</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for beer in beer_list %}
+      <tr class="accordian-toggle visible-row" data-toggle="collapse" data-target="#beer{{ beer.id }}">
+        <td>{{ beer.name }}</td>
+        <td>{{ beer.style }}</td>
+        <td>{{ beer.volume }}</td>
+        <td><a href="{{ beer.purchase_url }}">{{ beer.price }}</a></td>
+        <td><a href="{% url 'beer_update' beer.id %}"><i class="fa fa-pencil warning"></i></a></td>
+        <td><a href="{% url 'beer_delete' beer.id %}"><i class="fa fa-trash danger"></i></a></td>
+      </tr>
+      <tr class="hidden-row">
+        <td colspan="7" class="hidden-row">
+          <div class="accordian-body collapse beer-info" id="beer{{ beer.id }}">
+            <ul class="beer-info-list">
+              <li class="label minimal-label"><a href="#">{{ beer.country}}</a></li>
+              <li class="label minimal-label"><a href="#">{{ beer.brewery }}</a></li>
+              <li class="label minimal-label"><a href="#">{{ beer.abv }} %</a></li>
+              <li class="label minimal-label"><a href="#">{{ beer.ibu }} IBU</a></li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
   </table>
 </div>
 {% endblock content %}
