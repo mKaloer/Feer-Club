@@ -74,7 +74,7 @@ class Rating(models.Model):
     beer = models.ForeignKey(Beer)
     user = models.ForeignKey(User)
     index = models.IntegerField()
-    comment = models.TextField(default="")
+    comment = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return str(self.user) + " review of " + str(self.beer)
