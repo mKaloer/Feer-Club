@@ -106,8 +106,14 @@ class BeerList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
+        current_user = self.request.user
+        ratings = Rating.objects.filter(user=current_user)
+        rated_beers = []
+        for r in ratings:
+            rated_beers.append(r.beer)
         context = super(BeerList, self).get_context_data(**kwargs)
         context['nav_active'] = 'beers'
+        context['rated_beers'] = rated_beers
         return context
 
 class BeerDetail(LoginRequiredMixin, DetailView):

@@ -12,6 +12,7 @@
   <table class="table table-hover" style="border-collapse:collapse;">
     <thead>
       <tr class="header-row">
+        <th></th>
         <th>Name</th>
         <th>Style</th>
         <th>Volume (ml)</th>
@@ -23,6 +24,13 @@
     <tbody>
     {% for beer in beer_list %}
       <tr class="accordian-toggle visible-row" data-toggle="collapse" data-target="#beer{{ beer.id }}">
+        <td>
+        {% if beer in rated_beers %}
+          <a href="#"><i class="fa fa-star"></i></a>
+        {% else %}
+          <a href="{% url 'rating_create' %}"><i class="fa fa-star-o"></i></a>
+        {% endif %}
+        </td>
         <td>{{ beer.name }}</td>
         <td>{{ beer.style }}</td>
         <td>{{ beer.volume }}</td>
