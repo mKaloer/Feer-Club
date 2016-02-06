@@ -33,7 +33,6 @@ def edit_my_ratings(request):
     no_of_reviews = Rating.objects.filter(user=request.user).count()
     old_index = no_of_reviews - int(request.POST['old_index']) - 1
     new_index = no_of_reviews - int(request.POST['new_index']) - 1
-    logger.error(str(old_index) + ' -> ' + str(new_index))
 
     if old_index < new_index:
         ratings = Rating.objects.filter(user=request.user, index__gt=old_index, index__lte=new_index)
