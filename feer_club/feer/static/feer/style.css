@@ -51,6 +51,10 @@ tr.hidden-row td {
   color: #FF9326;
 }
 
+.good {
+  color: #007F00;
+}
+
 .table-number {
   text-align: right;
 }

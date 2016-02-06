@@ -45,7 +45,7 @@
       <td>{{ item.quantity }}</td>
       <td><a href="{% url 'beer_detail' item.beer.id %}">{{ item.beer.name }}</a></td>
       <td>{{ item.beer.volume }}</td>
-      <td class="table-number">{{ item.participants.count }}</td>
+      <td class="table-number">{% if user in item.participants.all %}<i class="fa fa-check-circle good"></i>{% endif %} {{ item.participants.count }}</td>
       <td>{{ item.volume_per_participant }}</td>
       <td>{{ item.drink_date }}</td>
       <td class="table-number">{{ item.beer.price }}</td>
@@ -57,9 +57,9 @@
       <td colspan="10" class="hidden-row">
         <div class="accordian-body collapse beerInfo" id="item{{ item.id }}">
           <ul class="beerInfoList">
-            {% for p in item.participants.all %}
-             <li class="label minimal-label"><a href="#">{{ p.username }}</a></li>
-            {% endfor %}
+          {% for p in item.participants.all %}
+            <li class="label minimal-label"><a href="#">{{ p.username }}</a></li>
+          {% endfor %}
           </ul>
         </div>
       </td>
