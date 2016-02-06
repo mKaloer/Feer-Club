@@ -1,7 +1,8 @@
 from django.conf.urls import include, url
 from .views import (BeerList, BeerDetail, BeerCreate, BeerUpdate, BeerDelete,
         OrderList, OrderDetail, OrderCreate, OrderUpdate, OrderDelete,
-        OrderItemCreate, OrderItemDelete, OrderItemUpdate)
+        OrderItemCreate, OrderItemDelete, OrderItemUpdate, RatingCreate,
+        RatingUpdate, RatingDelete)
 
 from . import views
 
@@ -22,6 +23,9 @@ urlpatterns = [
     url(r'^beer/(?P<pk>[-\w]+)/edit/$', BeerUpdate.as_view(), name='beer_update'),
     url(r'^profile/$', views.profile, name='user_profile'),
     url(r'^myratings/$', views.my_ratings, name='my_ratings'),
+    url(r'^myratings/(?P<pk>[-\w]+)/delete/$', RatingDelete.as_view(), name='rating_delete'),
+    url(r'^myratings/(?P<pk>[-\w]+)/edit/$', RatingUpdate.as_view(), name='rating_update'),
+    url(r'^myratings/add/$', RatingCreate.as_view(), name='rating_create'),
     url(r'^myratings/edit/$', views.edit_my_ratings, name='edit_my_ratings'),
     url(r'^$', views.index, name='index'),
 ]

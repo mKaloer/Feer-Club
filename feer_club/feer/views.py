@@ -35,7 +35,8 @@ def edit_my_ratings(request):
     new_index = no_of_reviews - int(request.POST['new_index']) - 1
 
     if old_index < new_index:
-        ratings = Rating.objects.filter(user=request.user, index__gt=old_index, index__lte=new_index)
+        ratings = Rating.objects.filter(user=request.user, index__gt=old_index,
+                index__lte=new_index)
         moved_rating = Rating.objects.get(user=request.user, index=old_index)
         for r in ratings:
             r.index -= 1
@@ -43,7 +44,8 @@ def edit_my_ratings(request):
         moved_rating.index = new_index
         moved_rating.save()
     else:
-        ratings = Rating.objects.filter(user=request.user, index__gte=new_index, index__lt=old_index)
+        ratings = Rating.objects.filter(user=request.user, index__gte=new_index,
+                index__lt=old_index)
         moved_rating = Rating.objects.get(user=request.user, index=old_index)
         for r in ratings:
             r.index += 1
@@ -53,6 +55,51 @@ def edit_my_ratings(request):
 
     msg = 'success'
     return HttpResponse(msg)
+
+class RatingCreate(LoginRequiredMixin, CreateView):
+    model = Rating
+    fields = ['beer', 'comment']
+    login_url = reverse_lazy('login')
+
+    def get_context_data(self, **kwargs):
+        current_user = self.request.user
+        ratings = Rating.objects.filter(user=current_user)
+        rated_beers = []
+        for r in ratings:
+            rated_beers.append(r.beer.id)
+        beers = Beer.objects.exclude(id__in=rated_beers)
+        context = super(RatingCreate, self).get_context_data(**kwargs)
+        context['beers'] = beers
+        return context
+
+    def form_valid(self, form):
+        current_user = self.request.user
+        current_no_of_reviews = Rating.objects.filter(user=current_user).count()
+        form.instance.user = current_user
+        form.instance.index = current_no_of_reviews
+        form.save()
+        return HttpResponseRedirect(reverse_lazy('my_ratings'))
+
+class RatingUpdate(LoginRequiredMixin, UpdateView):
+    model = Rating
+    fields = ['comment']
+    success_url = reverse_lazy('my_ratings')
+    login_url = reverse_lazy('login')
+
+class RatingDelete(LoginRequiredMixin, DeleteView):
+    model = Rating
+    success_url = reverse_lazy('my_ratings')
+    login_url = reverse_lazy('login')
+
+    def delete(self, *args, **kwargs):
+        index = self.get_object().index
+        current_user = self.request.user
+        ratings_to_update = Rating.objects.filter(user=current_user,
+                index__gt=index)
+        for r in ratings_to_update:
+            r.index -= 1
+            r.save()
+        return super().delete(*args, **kwargs)
 
 class BeerList(LoginRequiredMixin, ListView):
     model = Beer

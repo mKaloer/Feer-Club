@@ -4,14 +4,15 @@
 {% csrf_token %}
 <script src="http://rubaxa.github.io/Sortable/Sortable.js"></script>
 
+<a href="{% url 'rating_create' %}">Add new rating</a>
 <div id="listWithHandle" class="list-group">
 {% for rating in ratings %}
   <div data-id="{{ rating.index }}" class="list-group-item">
     <span class="fa fa-bars handle" aria-hidden="true"></span>
     <span>{{ rating.index }}</span>
     {{ rating.beer.name }}
-    <span class="span-right"><a href="#"><i class="fa fa-trash danger"></i></a></span>
-    <span class="span-right"><a href="#"><i class="fa fa-pencil warning"></i></a></span>
+    <span class="span-right"><a href="{% url 'rating_delete' rating.id %}"><i class="fa fa-trash danger"></i></a></span>
+    <span class="span-right"><a href="{% url 'rating_update' rating.id %}"><i class="fa fa-pencil warning"></i></a></span>
   </div>
 {% endfor %}
 </div>
