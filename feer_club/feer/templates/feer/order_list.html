@@ -17,11 +17,12 @@
       <th></th>
       <th></th>
     </tr>
+  {% now "Y-m-d" as todays_date %}
   {% for order in order_list %}
     <tr>
       <td><a href="{% url 'order_detail' order.id %}">{{ order.name }}</a></td>
       <td>{{ order.cost }}</td>
-      <td>{{ order.order_date }}</td>
+      <td>{% if todays_date > order.order_date|date:"Y-m-d" %}<i class="fa fa-truck"></i>{% else %}<i class="fa fa-shopping-cart">{% endif %}</i> {{ order.order_date }}</td>
       <td><a href="{% url 'order_update' order.id %}">Edit</a></td>
       <td><a href="{% url 'order_delete' order.id %}">Delete</a></td>
     </tr>

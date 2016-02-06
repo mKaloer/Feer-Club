@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from .models import Beer, Order, OrderItem, Rating
+from datetime import date
 import logging
 logger = logging.getLogger(__name__)
 
@@ -144,6 +145,11 @@ class OrderList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(OrderList, self).get_context_data(**kwargs)
         context['nav_active'] = 'orders'
+        orders = Order.objects.all()
+        orders_shipped = {}
+        for o in orders:
+            orders_shipped[o] = True if o.order_date < date.today() else False
+        context['orders_shipped'] = orders_shipped
         return context
 
 class OrderDetail(LoginRequiredMixin, DetailView):

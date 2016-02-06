@@ -4,6 +4,13 @@
 {% csrf_token %}
 <script src="http://rubaxa.github.io/Sortable/Sortable.js"></script>
 
+<div class="alert alert-info" role="alert">
+  <p>
+    Rate beers relative to each other. Beers at the top are better than beers at the bottom.
+    Drag the beers by holding the burger on the left and rearrange the beers so that the order matches your liking of them.
+  </p>
+</div>
+
 <a href="{% url 'rating_create' %}">Add new rating</a>
 <div id="listWithHandle" class="list-group">
 {% for rating in ratings %}
