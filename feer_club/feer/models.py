@@ -13,6 +13,7 @@ class Beer(models.Model):
     volume = models.IntegerField()
     purchase_url = models.URLField(max_length=512)
     price = models.DecimalField(max_digits=6, decimal_places=2)
+    ratings = models.ManyToManyField(User, through="Rating")
 
     def __str__(self):
         return self.name
@@ -65,3 +66,12 @@ class Order(models.Model):
 
     def get_absolute_url(self):
         return reverse('order_detail', kwargs={'pk': self.pk})
+
+class Rating(models.Model):
+    beer = models.ForeignKey(Beer)
+    user = models.ForeignKey(User)
+    index = models.IntegerField()
+    comment = models.TextField(default="")
+
+    def __str__(self):
+        return str(self.user) + " review of " + str(self.beer)

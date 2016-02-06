@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^beer/(?P<pk>[-\w]+)/delete/$', BeerDelete.as_view(), name='beer_delete'),
     url(r'^beer/(?P<pk>[-\w]+)/edit/$', BeerUpdate.as_view(), name='beer_update'),
     url(r'^profile/$', views.profile, name='user_profile'),
+    url(r'^myratings/$', views.my_ratings, name='my_ratings'),
     url(r'^$', views.index, name='index'),
 ]

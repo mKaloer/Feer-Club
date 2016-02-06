@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from .models import Beer, Order, OrderItem
+from .models import Beer, Order, OrderItem, Rating
 import logging
 logger = logging.getLogger(__name__)
 
@@ -18,6 +18,13 @@ def index(request):
 @login_required(login_url=reverse_lazy('login'))
 def profile(request):
     return render(request, 'feer/profile.html')
+
+@login_required(login_url=reverse_lazy('login'))
+def my_ratings(request):
+    ratings = sorted(Rating.objects.filter(user=request.user),
+            key=lambda r: r.index)
+    context = {'ratings': ratings, 'nav_active': 'my_ratings'}
+    return render(request, 'feer/my_ratings.html', context)
 
 class BeerList(LoginRequiredMixin, ListView):
     model = Beer

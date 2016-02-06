@@ -33,6 +33,7 @@
           <li class="{% if nav_active == 'home' %} active {% endif %}"><a href="{% url 'index' %}">Home</a></li>
           <li class="{% if nav_active == 'beers' %} active {% endif %}"><a href="{% url 'beer_list' %}">Beers</a></li>
           <li class="{% if nav_active == 'orders' %} active {% endif %}"><a href="{% url 'order_list' %}">Orders</a></li>
+          <li class="{% if nav_active == 'my_ratings' %} active {% endif %}"><a href="{% url 'my_ratings' %}">My Ratings</a></li>
         </ul>
         <div class="navbar-right">
         {% if not user.is_anonymous %}

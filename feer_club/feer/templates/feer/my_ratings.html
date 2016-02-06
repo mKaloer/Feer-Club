@@ -1,0 +1,26 @@
+{% extends "feer/base.html" %}
+
+{% block content %}
+<script src="http://rubaxa.github.io/Sortable/Sortable.js"></script>
+
+<div id="listWithHandle" class="list-group">
+{% for rating in ratings %}
+  <div data-id="{{ rating.index }}" class="list-group-item">
+    <span class="fa fa-bars handle" aria-hidden="true"></span>
+    {{ rating.beer.name }}
+    <span class="span-right"><a href="#"><i class="fa fa-trash danger"></i></a></span>
+    <span class="span-right"><a href="#"><i class="fa fa-pencil warning"></i></a></span>
+  </div>
+{% endfor %}
+</div>
+
+<script>
+Sortable.create(listWithHandle, {
+  handle: '.handle',
+  animation: 150,
+  onSort: function (evt) {
+    console.log(evt.oldIndex + ' -> ' + evt.newIndex);
+  }
+});
+</script>
+{% endblock content %}
