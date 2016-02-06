@@ -1,12 +1,14 @@
 {% extends "feer/base.html" %}
 
 {% block content %}
+{% csrf_token %}
 <script src="http://rubaxa.github.io/Sortable/Sortable.js"></script>
 
 <div id="listWithHandle" class="list-group">
 {% for rating in ratings %}
   <div data-id="{{ rating.index }}" class="list-group-item">
     <span class="fa fa-bars handle" aria-hidden="true"></span>
+    <span>{{ rating.index }}</span>
     {{ rating.beer.name }}
     <span class="span-right"><a href="#"><i class="fa fa-trash danger"></i></a></span>
     <span class="span-right"><a href="#"><i class="fa fa-pencil warning"></i></a></span>
@@ -15,11 +17,49 @@
 </div>
 
 <script>
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+};
+var csrftoken = getCookie('csrftoken');
+
 Sortable.create(listWithHandle, {
   handle: '.handle',
   animation: 150,
   onSort: function (evt) {
     console.log(evt.oldIndex + ' -> ' + evt.newIndex);
+    // Setup csrf token
+    function csrfSafeMethod(method) {
+      // these HTTP methods do not require CSRF protection
+      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    };
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+      }
+    });
+
+    $.ajax({
+        url:'edit/',
+        type: "POST",
+        data: {old_index: evt.oldIndex, new_index: evt.newIndex},
+        success:function(response){},
+        complete:function(){},
+        error:function (xhr, textStatus, thrownError){}
+    });
   }
 });
 </script>

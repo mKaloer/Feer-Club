@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from .models import Beer, Order, OrderItem, Rating
 import logging
 logger = logging.getLogger(__name__)
@@ -22,9 +23,37 @@ def profile(request):
 @login_required(login_url=reverse_lazy('login'))
 def my_ratings(request):
     ratings = sorted(Rating.objects.filter(user=request.user),
-            key=lambda r: r.index)
+            key=lambda r: r.index,
+            reverse=True)
     context = {'ratings': ratings, 'nav_active': 'my_ratings'}
     return render(request, 'feer/my_ratings.html', context)
+
+@login_required(login_url=reverse_lazy('login'))
+def edit_my_ratings(request):
+    no_of_reviews = Rating.objects.filter(user=request.user).count()
+    old_index = no_of_reviews - int(request.POST['old_index']) - 1
+    new_index = no_of_reviews - int(request.POST['new_index']) - 1
+    logger.error(str(old_index) + ' -> ' + str(new_index))
+
+    if old_index < new_index:
+        ratings = Rating.objects.filter(user=request.user, index__gt=old_index, index__lte=new_index)
+        moved_rating = Rating.objects.get(user=request.user, index=old_index)
+        for r in ratings:
+            r.index -= 1
+            r.save()
+        moved_rating.index = new_index
+        moved_rating.save()
+    else:
+        ratings = Rating.objects.filter(user=request.user, index__gte=new_index, index__lt=old_index)
+        moved_rating = Rating.objects.get(user=request.user, index=old_index)
+        for r in ratings:
+            r.index += 1
+            r.save()
+        moved_rating.index = new_index
+        moved_rating.save()
+
+    msg = 'success'
+    return HttpResponse(msg)
 
 class BeerList(LoginRequiredMixin, ListView):
     model = Beer

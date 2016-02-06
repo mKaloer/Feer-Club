@@ -68,6 +68,9 @@ class Order(models.Model):
         return reverse('order_detail', kwargs={'pk': self.pk})
 
 class Rating(models.Model):
+    class Meta:
+        unique_together = ('beer', 'user')
+
     beer = models.ForeignKey(Beer)
     user = models.ForeignKey(User)
     index = models.IntegerField()
