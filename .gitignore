@@ -63,3 +63,5 @@ target/
 
 # Misc
 *.sqlite3
+
+feer_club/feer_club/settings/__init__.py
