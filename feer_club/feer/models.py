@@ -27,8 +27,14 @@ class OrderItem(models.Model):
     quantity = models.IntegerField()
     cost = models.DecimalField(max_digits=6, decimal_places=2)
     participants = models.ManyToManyField(User)
-    volume_per_participant = models.FloatField()
     drink_date = models.DateField('drink date')
+
+    def volume_per_participant(self):
+        num_of_parts = self.participants.count()
+        if num_of_parts == 0:
+            return 0
+        else:
+            return (self.beer.volume * self.quantity) / num_of_parts
 
     def participants_abbreviation(self):
         abbr = ''

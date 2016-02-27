@@ -223,12 +223,9 @@ def order_item_form_valid(self, form):
     if form.instance.cost is not None:
         form.instance.order.cost -= form.instance.cost
     form.instance.cost = form.instance.beer.price * form.instance.quantity
-    form.instance.volume_per_participant = 0
     # Save so that participants can be referenced
     form.save()
     num_of_participants = form.instance.participants.count()
-    form.instance.volume_per_participant = (0 if num_of_participants == 0 else
-        form.instance.beer.volume / num_of_participants)
     form.instance.order.cost += form.instance.cost
     form.instance.order.save()
     form.save()
