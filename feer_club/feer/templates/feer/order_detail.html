@@ -32,6 +32,7 @@
 
   <table class="table table-hover" style="border-collapse:collapse;">
     <tr class="header-row">
+      <th></th>
       <th>Quantity</th>
       <th>Beer</th>
       <th>Volume (ml)</th>
@@ -45,10 +46,11 @@
     </tr>
   {% for item in order.orderitem_set.all %}
     <tr class="accordian-toggle visible-row" data-toggle="collapse" data-target="#item{{ item.id }}">
+      <td><input type="checkbox" {% if user in item.participants.all %}checked{% endif %}></td>
       <td>{{ item.quantity }}</td>
       <td><a href="{% url 'beer_detail' item.beer.id %}">{{ item.beer.name }}</a></td>
       <td>{{ item.beer.volume }}</td>
-      <td class="table-number">{% if user in item.participants.all %}<i class="fa fa-check-circle good"></i>{% endif %} {{ item.participants.count }}</td>
+      <td class="table-number">{{ item.participants.count }}</td>
       <td>{{ item.volume_per_participant }}</td>
       <td>{{ item.drink_date }}</td>
       <td class="table-number">{{ item.beer.price }}</td>
