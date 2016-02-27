@@ -31,6 +31,21 @@ def my_ratings(request):
     return render(request, 'feer/my_ratings.html', context)
 
 @login_required(login_url=reverse_lazy('login'))
+def edit_my_participation(request, pk):
+    order_item_id = request.POST['order_item_id']
+    checked = request.POST['checked']
+    order_item = OrderItem.objects.get(id=order_item_id)
+
+    if checked == 'true':
+        order_item.participants.add(request.user)
+    else:
+        order_item.participants.remove(request.user)
+    order_item.save()
+
+    msg = 'success'
+    return HttpResponse(msg)
+
+@login_required(login_url=reverse_lazy('login'))
 def edit_my_ratings(request):
     no_of_reviews = Rating.objects.filter(user=request.user).count()
     old_index = no_of_reviews - int(request.POST['old_index']) - 1

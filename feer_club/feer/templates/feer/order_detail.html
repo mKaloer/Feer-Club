@@ -46,7 +46,7 @@
     </tr>
   {% for item in order.orderitem_set.all %}
     <tr class="accordian-toggle visible-row" data-toggle="collapse" data-target="#item{{ item.id }}">
-      <td><input type="checkbox" {% if user in item.participants.all %}checked{% endif %}></td>
+      <td><input type="checkbox" name="{{ item.id }}" onchange="checkboxChanged(this)" {% if user in item.participants.all %}checked{% endif %}></td>
       <td>{{ item.quantity }}</td>
       <td><a href="{% url 'beer_detail' item.beer.id %}">{{ item.beer.name }}</a></td>
       <td>{{ item.beer.volume }}</td>
@@ -72,4 +72,49 @@
   {% endfor %}
   </table>
 </div>
+
+<script>
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+};
+var csrftoken = getCookie('csrftoken');
+
+function checkboxChanged(elem) {
+  console.log(elem.name + ' changed to ' + elem.checked);
+
+  function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  };
+  $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+      if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+      }
+    }
+  });
+
+  $.ajax({
+      url:'editmyparticipation/',
+      type: "POST",
+      data: {order_item_id: elem.name, checked: elem.checked},
+      success:function(response){},
+      complete:function(){},
+      error:function (xhr, textStatus, thrownError){}
+  });
+}
+</script>
+
 {% endblock content %}

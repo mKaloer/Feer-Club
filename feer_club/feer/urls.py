@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^orders/$', OrderList.as_view(), name='order_list'),
     url(r'^order/add/$', OrderCreate.as_view(), name='order_create'),
     url(r'^order/(?P<pk>[-\w]+)/$', OrderDetail.as_view(), name='order_detail'),
+    url(r'^order/(?P<pk>[-\w]+)/editmyparticipation/$', views.edit_my_participation, name='edit_my_participation'),
     url(r'^order/(?P<pk>[-\w]+)/additem/$', OrderItemCreate.as_view(), name='orderitem_create'),
     url(r'^order/(?P<pk>[-\w]+)/delete/$', OrderDelete.as_view(), name='order_delete'),
     url(r'^order/(?P<pk>[-\w]+)/edit/$', OrderUpdate.as_view(), name='order_update'),
