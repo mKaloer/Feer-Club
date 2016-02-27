@@ -11,6 +11,7 @@ from django.db.models import Q
 from .models import Beer, Order, OrderItem, Rating
 from datetime import date
 import logging
+import math
 logger = logging.getLogger(__name__)
 
 def index(request):
@@ -159,7 +160,7 @@ class OrderDetail(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(OrderDetail, self).get_context_data(**kwargs)
         costs, emails = participant_information(self.object)
-        context['costs'] = costs
+        context['costs'] = round_participant_costs(costs)
         context['emails'] = emails
         return context
 
@@ -178,6 +179,9 @@ def participant_information(order):
             if p.username not in emails:
                 emails[p.username] = p.email
     return sorted(costs.items()), '; '.join(emails.values())
+
+def round_participant_costs(costs):
+    return list(map(lambda t: (t[0], math.ceil(t[1])), costs))
 
 class OrderCreate(LoginRequiredMixin, CreateView):
     model = Order
