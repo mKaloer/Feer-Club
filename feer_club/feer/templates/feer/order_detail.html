@@ -1,6 +1,9 @@
 {% extends "feer/base.html" %}
 
 {% block content %}
+<div class="alert alert-info" role="alert">
+  <p>{{ emails }}</p>
+</div>
 <div class="panel panel-default">
   <div class="panel-heading">
     Participants
@@ -11,7 +14,7 @@
       <th>Participant</th>
       <th>To pay (DKK)</th>
     </tr>
-  {% for p, c in order.participant_costs %}
+  {% for p, c in costs %}
     <tr>
       <td>{{ p }}</td>
       <td>{{ c }}</td>

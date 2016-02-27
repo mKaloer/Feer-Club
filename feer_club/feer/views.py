@@ -156,6 +156,29 @@ class OrderDetail(LoginRequiredMixin, DetailView):
     model = Order
     login_url = reverse_lazy('login')
 
+    def get_context_data(self, **kwargs):
+        context = super(OrderDetail, self).get_context_data(**kwargs)
+        costs, emails = participant_information(self.object)
+        context['costs'] = costs
+        context['emails'] = emails
+        return context
+
+def participant_information(order):
+    items = OrderItem.objects.filter(order__id=order.id)
+    costs = {}
+    emails = {}
+    for item in items:
+        num_of_participants = item.participants.count()
+        for p in item.participants.all():
+            cost = item.cost / num_of_participants
+            if p.username in costs:
+                costs[p.username] += cost
+            else:
+                costs[p.username] = cost
+            if p.username not in emails:
+                emails[p.username] = p.email
+    return sorted(costs.items()), '; '.join(emails.values())
+
 class OrderCreate(LoginRequiredMixin, CreateView):
     model = Order
     fields = ['name', 'order_date']
