@@ -1,0 +1,29 @@
+[
+  {
+    "model": "feer.Order",
+    "pk": 1,
+    "fields": {
+      "name": "January",
+      "order_date": "2016-01-01",
+      "cost": 0
+    }
+  },
+  {
+    "model": "feer.Order",
+    "pk": 2,
+    "fields": {
+      "name": "April",
+      "order_date": "2016-04-01",
+      "cost": 0
+    }
+  },
+  {
+    "model": "feer.Order",
+    "pk": 3,
+    "fields": {
+      "name": "December",
+      "order_date": "2016-12-01",
+      "cost": 0
+    }
+  }
+]

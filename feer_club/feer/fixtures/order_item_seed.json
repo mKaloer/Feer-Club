@@ -1,0 +1,158 @@
+[
+  {
+    "model": "feer.OrderItem",
+    "pk": 1,
+    "fields": {
+      "beer": 1,
+      "order": 1,
+      "quantity": 3,
+      "cost": 0,
+      "participants": [],
+      "drink_date": "2016-01-01"
+    }
+  },
+  {
+    "model": "feer.OrderItem",
+    "pk": 2,
+    "fields": {
+      "beer": 2,
+      "order": 1,
+      "quantity": 3,
+      "cost": 0,
+      "participants": [],
+      "drink_date": "2016-01-01"
+    }
+  },
+  {
+    "model": "feer.OrderItem",
+    "pk": 3,
+    "fields": {
+      "beer": 3,
+      "order": 1,
+      "quantity": 2,
+      "cost": 0,
+      "participants": [],
+      "drink_date": "2016-01-01"
+    }
+  },
+  {
+    "model": "feer.OrderItem",
+    "pk": 4,
+    "fields": {
+      "beer": 4,
+      "order": 1,
+      "quantity": 5,
+      "cost": 0,
+      "participants": [],
+      "drink_date": "2016-01-01"
+    }
+  },
+  {
+    "model": "feer.OrderItem",
+    "pk": 5,
+    "fields": {
+      "beer": 5,
+      "order": 1,
+      "quantity": 1,
+      "cost": 0,
+      "participants": [],
+      "drink_date": "2016-01-01"
+    }
+  },
+  {
+    "model": "feer.OrderItem",
+    "pk": 6,
+    "fields": {
+      "beer": 1,
+      "order": 2,
+      "quantity": 3,
+      "cost": 0,
+      "participants": [],
+      "drink_date": "2016-01-01"
+    }
+  },
+  {
+    "model": "feer.OrderItem",
+    "pk": 7,
+    "fields": {
+      "beer": 2,
+      "order": 2,
+      "quantity": 3,
+      "cost": 0,
+      "participants": [],
+      "drink_date": "2016-01-01"
+    }
+  },
+  {
+    "model": "feer.OrderItem",
+    "pk": 8,
+    "fields": {
+      "beer": 3,
+      "order": 2,
+      "quantity": 2,
+      "cost": 0,
+      "participants": [],
+      "drink_date": "2016-01-01"
+    }
+  },
+  {
+    "model": "feer.OrderItem",
+    "pk": 9,
+    "fields": {
+      "beer": 4,
+      "order": 2,
+      "quantity": 5,
+      "cost": 0,
+      "participants": [],
+      "drink_date": "2016-01-01"
+    }
+  },
+  {
+    "model": "feer.OrderItem",
+    "pk": 10,
+    "fields": {
+      "beer": 5,
+      "order": 2,
+      "quantity": 1,
+      "cost": 0,
+      "participants": [],
+      "drink_date": "2016-01-01"
+    }
+  },
+  {
+    "model": "feer.OrderItem",
+    "pk": 11,
+    "fields": {
+      "beer": 3,
+      "order": 3,
+      "quantity": 2,
+      "cost": 0,
+      "participants": [],
+      "drink_date": "2016-01-01"
+    }
+  },
+  {
+    "model": "feer.OrderItem",
+    "pk": 12,
+    "fields": {
+      "beer": 4,
+      "order": 3,
+      "quantity": 5,
+      "cost": 0,
+      "participants": [],
+      "drink_date": "2016-01-01"
+    }
+  },
+  {
+    "model": "feer.OrderItem",
+    "pk": 13,
+    "fields": {
+      "beer": 5,
+      "order": 3,
+      "quantity": 1,
+      "cost": 0,
+      "participants": [],
+      "drink_date": "2016-01-01"
+    }
+  }
+]

@@ -1,0 +1,75 @@
+[
+  {
+    "model": "feer.beer",
+    "pk": 1,
+    "fields": {
+      "name": "Arizona Beast",
+      "brewery": "Amager Bryghus",
+      "country": "Denmark",
+      "style": "Oatmeal India Pale Ale",
+      "abv": 7.0,
+      "ibu": 203,
+      "volume": 500,
+      "purchase_url": "http://www.bestofbeers.dk/product/arizona-beast-oatmeal-ipa-05-l-70-3269/",
+      "price": 51
+    }
+  },
+  {
+    "model": "feer.beer",
+    "pk": 2,
+    "fields": {
+      "name": "Pirate Noir",
+      "brewery": "Prairie Artisan Ales",
+      "country": "Unites States of America",
+      "style": "Imperial Stout",
+      "abv": 12.0,
+      "ibu": 60,
+      "volume": 355,
+      "purchase_url": "http://www.bestofbeers.dk/product/pirate-noir-imperial-stout-aged-in-jamaican-rum-barrels-033-l-120-3364/",
+      "price": 86
+    }
+  },
+  {
+    "model": "feer.beer",
+    "pk": 3,
+    "fields": {
+      "name": "Founders KBS 2015",
+      "brewery": "Founders",
+      "country": "United States of America",
+      "style": "Imperial Stout",
+      "abv": 11.2,
+      "ibu": 70,
+      "volume": 355,
+      "purchase_url": "http://www.bestofbeers.dk/product/founders-kbs-2015-0335-l-112-flavored-stout-chocolate-and-coffee-3136/",
+      "price": 86
+    }
+  },
+  {
+    "model": "feer.beer",
+    "pk": 4,
+    "fields": {
+      "name": "Soft DK",
+      "brewery": "Evil Twin",
+      "country": "United States of America",
+      "style": "Imperial Stout",
+      "abv": 10.4,
+      "volume": 355,
+      "purchase_url": "http://www.bestofbeers.dk/product/soft-dk-imperial-stout-033-l-104-3164/",
+      "price": 41
+    }
+  },
+  {
+    "model": "feer.beer",
+    "pk": 5,
+    "fields": {
+      "name": "Beer Geek Oatmeal Stout Brewed With Chocolate",
+      "brewery": "Mikkeller",
+      "country": "Denmark",
+      "style": "Oatmeal Stout",
+      "abv": 12.12,
+      "volume": 330,
+      "purchase_url": "http://www.bestofbeers.dk/product/beer-geek-oatmeal-stout-brewed-with-chocolate-033-l-1212-3025/",
+      "price": 66
+    }
+  }
+]
