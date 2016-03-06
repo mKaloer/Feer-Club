@@ -15,3 +15,8 @@ Manage Them Beers
 The `feer` app has fixtures for a number of models in the `fixtures` directory in the `feer` app. Load these using
 
     `python manage.py loaddata <fixture>`
+    
+## Contributing
+
+If you find any bugs or have any suggestions, please submit an issue in the issue tracker and provide an appropriate tag. If you want the issue to be resolved within a reasonable time frame, make a pull request.
+
