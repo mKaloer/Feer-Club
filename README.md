@@ -12,4 +12,6 @@ Manage Them Beers
 - Go to `http://127.0.0.1:8000/feer` for beers! Cheers!
 
 ### Seeding the Database
-The `feer` app has fixtures for a number of models in the `fixtures` directory in the `feer` app. Load these using `python manage.py loaddata <fixture>`.
+The `feer` app has fixtures for a number of models in the `fixtures` directory in the `feer` app. Load these using
+
+    `python manage.py loaddata <fixture>`
