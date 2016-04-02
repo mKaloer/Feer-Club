@@ -25,7 +25,6 @@ class OrderItem(models.Model):
     beer = models.ForeignKey('Beer')
     order = models.ForeignKey('Order')
     quantity = models.IntegerField()
-    cost = models.DecimalField(max_digits=6, decimal_places=2)
     participants = models.ManyToManyField(User)
     drink_date = models.DateField('drink date')
 
@@ -42,6 +41,9 @@ class OrderItem(models.Model):
             abbr += user.username + ', '
         return abbr.strip(', ')
 
+    def cost(self):
+        return self.beer.price * self.quantity
+
     def __str__(self):
         return str(self.quantity) + 'x ' + self.beer.name
 
@@ -52,7 +54,9 @@ class Order(models.Model):
     name = models.CharField(max_length=512)
     beers = models.ManyToManyField(Beer, through='OrderItem')
     order_date = models.DateField('order date')
-    cost = models.DecimalField(max_digits=6, decimal_places=2)
+
+    def cost(self):
+        return sum([i.cost() for i in self.orderitem_set.all()])
 
     def __str__(self):
         return self.name

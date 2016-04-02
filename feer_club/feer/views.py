@@ -186,7 +186,7 @@ def participant_information(order):
     for item in items:
         num_of_participants = item.participants.count()
         for p in item.participants.all():
-            cost = item.cost / num_of_participants
+            cost = item.cost() / num_of_participants
             if p.username in costs:
                 costs[p.username] += cost
             else:
@@ -219,14 +219,9 @@ class OrderDelete(LoginRequiredMixin, DeleteView):
     login_url = reverse_lazy('login')
 
 def order_item_form_valid(self, form):
-    # Subtract old price from order
-    if form.instance.cost is not None:
-        form.instance.order.cost -= form.instance.cost
-    form.instance.cost = form.instance.beer.price * form.instance.quantity
     # Save so that participants can be referenced
     form.save()
     num_of_participants = form.instance.participants.count()
-    form.instance.order.cost += form.instance.cost
     form.instance.order.save()
     form.save()
     return HttpResponseRedirect(reverse_lazy('order_detail',
@@ -252,12 +247,6 @@ class OrderItemUpdate(LoginRequiredMixin, UpdateView):
 class OrderItemDelete(LoginRequiredMixin, DeleteView):
     model = OrderItem
     login_url = reverse_lazy('login')
-
-    def delete(self, *args, **kwargs):
-        order_item = self.get_object()
-        order_item.order.cost -= order_item.cost
-        order_item.order.save()
-        return super().delete(*args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy('order_detail', kwargs={'pk': self.object.order.pk})
