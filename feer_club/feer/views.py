@@ -4,11 +4,14 @@ from django.views.generic import (ListView, DetailView, CreateView, UpdateView,
     DeleteView)
 from django.views.generic.edit import ModelFormMixin
 from django.core.urlresolvers import reverse_lazy
+from django.core.signals import request_finished
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from .models import Beer, Order, OrderItem, Rating
+from django.forms import ValidationError
+from django.utils.translation import ugettext_lazy as _
 from datetime import date
 import logging
 import math
@@ -73,6 +76,29 @@ def edit_my_ratings(request):
     msg = 'success'
     return HttpResponse(msg)
 
+class NonOverwritingUpdateView(UpdateView):
+    """
+    UpdateView subclass that ensures that the model has not been
+    changed since load. If so, a validation error is shown.
+    """
+    def get(self, request, *args, **kwargs):
+        # Save last update in session
+        obj = self.get_object()
+        obj_name = obj.__class__.__name__
+        request.session["%s_%s_initial_updated" % (obj_name, obj.id)] = str(obj.updated)
+        return super().get(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        curr_obj = self.get_object()
+        obj_name = curr_obj.__class__.__name__
+        # Check if object has been updated since view loaded
+        if (self.request.session["%s_%s_initial_updated" % (obj_name, curr_obj.id)] != str(curr_obj.updated)):
+            # Show error
+            form.add_error(None,
+                           ValidationError(_('Error: Object modified since load'), code='modified'))
+            return super().form_invalid(form)
+        return super().form_valid(form)
+
 class RatingCreate(LoginRequiredMixin, CreateView):
     model = Rating
     fields = ['beer', 'comment']
@@ -97,7 +123,7 @@ class RatingCreate(LoginRequiredMixin, CreateView):
         form.save()
         return HttpResponseRedirect(reverse_lazy('my_ratings'))
 
-class RatingUpdate(LoginRequiredMixin, UpdateView):
+class RatingUpdate(LoginRequiredMixin, NonOverwritingUpdateView):
     model = Rating
     fields = ['comment']
     success_url = reverse_lazy('my_ratings')
@@ -143,7 +169,7 @@ class BeerCreate(LoginRequiredMixin, CreateView):
               'purchase_url', 'price']
     login_url = reverse_lazy('login')
 
-class BeerUpdate(LoginRequiredMixin, UpdateView):
+class BeerUpdate(LoginRequiredMixin, NonOverwritingUpdateView):
     model = Beer
     fields = ['name', 'brewery', 'country', 'style', 'abv', 'ibu', 'volume',
               'purchase_url', 'price']
@@ -208,7 +234,7 @@ class OrderCreate(LoginRequiredMixin, CreateView):
         form.save()
         return HttpResponseRedirect(reverse_lazy('order_list'))
 
-class OrderUpdate(LoginRequiredMixin, UpdateView):
+class OrderUpdate(LoginRequiredMixin, NonOverwritingUpdateView):
     model = Order
     fields = ['name', 'order_date']
     login_url = reverse_lazy('login')
@@ -228,7 +254,7 @@ class OrderItemCreate(LoginRequiredMixin, CreateView):
         return HttpResponseRedirect(reverse_lazy('order_detail',
             kwargs={'pk': form.instance.order.pk}))
 
-class OrderItemUpdate(LoginRequiredMixin, UpdateView):
+class OrderItemUpdate(LoginRequiredMixin, NonOverwritingUpdateView):
     model = OrderItem
     fields = ['beer', 'quantity', 'drink_date']
     login_url = reverse_lazy('login')
