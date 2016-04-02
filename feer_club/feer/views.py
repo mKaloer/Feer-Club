@@ -218,15 +218,6 @@ class OrderDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('order_list')
     login_url = reverse_lazy('login')
 
-def order_item_form_valid(self, form):
-    # Save so that participants can be referenced
-    form.save()
-    num_of_participants = form.instance.participants.count()
-    form.instance.order.save()
-    form.save()
-    return HttpResponseRedirect(reverse_lazy('order_detail',
-        kwargs={'pk': form.instance.order.pk}))
-
 class OrderItemCreate(LoginRequiredMixin, CreateView):
     model = OrderItem
     fields = ['beer', 'quantity', 'drink_date']
@@ -234,15 +225,16 @@ class OrderItemCreate(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.order = Order.objects.get(pk=self.kwargs['pk'])
-        return order_item_form_valid(self, form)
+        return HttpResponseRedirect(reverse_lazy('order_detail',
+            kwargs={'pk': form.instance.order.pk}))
 
 class OrderItemUpdate(LoginRequiredMixin, UpdateView):
     model = OrderItem
     fields = ['beer', 'quantity', 'drink_date']
     login_url = reverse_lazy('login')
 
-    def form_valid(self, form):
-        return order_item_form_valid(self, form)
+    def get_success_url(self):
+        return reverse_lazy('order_detail', kwargs={'pk': self.object.order.pk})
 
 class OrderItemDelete(LoginRequiredMixin, DeleteView):
     model = OrderItem
