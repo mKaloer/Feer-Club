@@ -125,6 +125,7 @@ class RatingCreate(LoginRequiredMixin, CreateView):
 
 class RatingUpdate(LoginRequiredMixin, NonOverwritingUpdateView):
     model = Rating
+    template_name_suffix = '_update_form'
     fields = ['comment']
     success_url = reverse_lazy('my_ratings')
     login_url = reverse_lazy('login')
