@@ -5,6 +5,7 @@
 {% block content %}
 <form action="" method="post">
   {% csrf_token %}
+  {% bootstrap_form_errors form %}
   <div class="form-group">
     <label class="control-label" for="id_beer">Beer</label>
     <p id="id_beer">{{ rating.beer.name }}</p>

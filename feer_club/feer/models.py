@@ -14,6 +14,8 @@ class Beer(models.Model):
     purchase_url = models.URLField(max_length=512)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     ratings = models.ManyToManyField(User, through="Rating")
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -27,6 +29,8 @@ class OrderItem(models.Model):
     quantity = models.IntegerField()
     participants = models.ManyToManyField(User)
     drink_date = models.DateField('drink date')
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     def volume_per_participant(self):
         num_of_parts = self.participants.count()
@@ -54,6 +58,8 @@ class Order(models.Model):
     name = models.CharField(max_length=512)
     beers = models.ManyToManyField(Beer, through='OrderItem')
     order_date = models.DateField('order date')
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     def cost(self):
         return sum([i.cost() for i in self.orderitem_set.all()])
@@ -72,6 +78,8 @@ class Rating(models.Model):
     user = models.ForeignKey(User)
     index = models.IntegerField()
     comment = models.TextField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.user) + " review of " + str(self.beer)
