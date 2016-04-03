@@ -6,7 +6,7 @@ from django.views.generic.edit import ModelFormMixin
 from django.core.urlresolvers import reverse_lazy
 from django.core.signals import request_finished
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from .models import Beer, Order, OrderItem, Rating
@@ -164,22 +164,25 @@ class BeerDetail(LoginRequiredMixin, DetailView):
     model = Beer
     login_url = reverse_lazy('login')
 
-class BeerCreate(LoginRequiredMixin, CreateView):
+class BeerCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Beer
     fields = ['name', 'brewery', 'country', 'style', 'abv', 'ibu', 'volume',
               'purchase_url', 'price']
     login_url = reverse_lazy('login')
+    permission_required = "feer.add_beer"
 
-class BeerUpdate(LoginRequiredMixin, NonOverwritingUpdateView):
+class BeerUpdate(LoginRequiredMixin, PermissionRequiredMixin, NonOverwritingUpdateView):
     model = Beer
     fields = ['name', 'brewery', 'country', 'style', 'abv', 'ibu', 'volume',
               'purchase_url', 'price']
     login_url = reverse_lazy('login')
+    permission_required = "feer.change_beer"
 
-class BeerDelete(LoginRequiredMixin, DeleteView):
+class BeerDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Beer
     success_url = reverse_lazy('beer_list')
     login_url = reverse_lazy('login')
+    permission_required = "feer.delete_beer"
 
 class OrderList(LoginRequiredMixin, ListView):
     model = Order
@@ -225,30 +228,34 @@ def participant_information(order):
 def round_participant_costs(costs):
     return list(map(lambda t: (t[0], math.ceil(t[1])), costs))
 
-class OrderCreate(LoginRequiredMixin, CreateView):
+class OrderCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Order
     fields = ['name', 'order_date']
     login_url = reverse_lazy('login')
+    permission_required = "feer.add_order"
 
     def form_valid(self, form):
         form.instance.cost = 0
         form.save()
         return HttpResponseRedirect(reverse_lazy('order_list'))
 
-class OrderUpdate(LoginRequiredMixin, NonOverwritingUpdateView):
+class OrderUpdate(LoginRequiredMixin, PermissionRequiredMixin, NonOverwritingUpdateView):
     model = Order
     fields = ['name', 'order_date']
     login_url = reverse_lazy('login')
+    permission_required = "feer.change_order"
 
-class OrderDelete(LoginRequiredMixin, DeleteView):
+class OrderDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Order
     success_url = reverse_lazy('order_list')
     login_url = reverse_lazy('login')
+    permission_required = "feer.delete_order"
 
-class OrderItemCreate(LoginRequiredMixin, CreateView):
+class OrderItemCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = OrderItem
     fields = ['beer', 'quantity', 'drink_date']
     login_url = reverse_lazy('login')
+    permission_required = "feer.add_orderitem"
 
     def form_valid(self, form):
         form.instance.order = Order.objects.get(pk=self.kwargs['pk'])
@@ -263,9 +270,10 @@ class OrderItemUpdate(LoginRequiredMixin, NonOverwritingUpdateView):
     def get_success_url(self):
         return reverse_lazy('order_detail', kwargs={'pk': self.object.order.pk})
 
-class OrderItemDelete(LoginRequiredMixin, DeleteView):
+class OrderItemDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = OrderItem
     login_url = reverse_lazy('login')
+    permission_required = "feer.delete_orderitem"
 
     def get_success_url(self):
         return reverse_lazy('order_detail', kwargs={'pk': self.object.order.pk})
