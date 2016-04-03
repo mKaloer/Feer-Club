@@ -16,7 +16,7 @@
 {% for rating in ratings %}
   <div data-id="{{ rating.index }}" class="list-group-item">
     <span class="fa fa-bars handle" aria-hidden="true"></span>
-    {{ rating.beer.name }}
+    <b>{{ rating.beer.name }}:</b> {{ rating.comment }}
     <span class="span-right"><a href="{% url 'rating_delete' rating.id %}"><i class="fa fa-trash danger"></i></a></span>
     <span class="span-right"><a href="{% url 'rating_update' rating.id %}"><i class="fa fa-pencil warning"></i></a></span>
   </div>
