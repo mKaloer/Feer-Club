@@ -259,6 +259,7 @@ class OrderItemCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.order = Order.objects.get(pk=self.kwargs['pk'])
+        form.save()
         return HttpResponseRedirect(reverse_lazy('order_detail',
             kwargs={'pk': form.instance.order.pk}))
 
