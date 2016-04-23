@@ -25,6 +25,7 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     {{ order.name }}: <b>{{ order.cost }} DKK</b>
+    {% if order.remainding_balance > 0 %}, Remaining payment from last order: <b>{{ order.remainding_balance }} DKK</b>{% endif %}
     <span style="float:right">
       <a href="{% url 'orderitem_create' order.id %}">Add beer to order</a>
     </span>

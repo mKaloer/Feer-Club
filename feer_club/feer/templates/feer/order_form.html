@@ -14,6 +14,10 @@
     <span class="input-group-addon" id="basic-addon1">Order date</span>
     <input class="form-control" placeholder="Order date" type="date" name="order_date" value="{{ order.order_date|date:"Y-m-d" }}">
   </div>
+  <div class="input-group">
+    <span class="input-group-addon" id="basic-addon1">Remainding balance</span>
+    <input class="form-control" placeholder="Order date" type="number" name="remainding_balance" value="{{ order.remainding_balance }}">
+  </div>
 
   {% buttons %}
     <button type="submit" class="btn btn-primary">

@@ -205,6 +205,7 @@ class OrderDetail(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(OrderDetail, self).get_context_data(**kwargs)
         costs, emails = participant_information(self.object)
+        costs = add_costs_equally(costs, self.object.remainding_balance)
         context['costs'] = round_participant_costs(costs)
         context['emails'] = emails
         return context
@@ -228,9 +229,15 @@ def participant_information(order):
 def round_participant_costs(costs):
     return list(map(lambda t: (t[0], math.ceil(t[1])), costs))
 
+def add_costs_equally(costs, extra_cost):
+    if len(costs) == 0:
+        return costs
+    r = extra_cost / len(costs)
+    return list(map(lambda t: (t[0], t[1] + r), costs))
+
 class OrderCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Order
-    fields = ['name', 'order_date']
+    fields = ['name', 'order_date', 'remainding_balance']
     login_url = reverse_lazy('login')
     permission_required = "feer.add_order"
 
@@ -241,7 +248,7 @@ class OrderCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
 class OrderUpdate(LoginRequiredMixin, PermissionRequiredMixin, NonOverwritingUpdateView):
     model = Order
-    fields = ['name', 'order_date']
+    fields = ['name', 'order_date', 'remainding_balance']
     login_url = reverse_lazy('login')
     permission_required = "feer.change_order"
 
