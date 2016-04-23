@@ -13,6 +13,7 @@ from .models import Beer, Order, OrderItem, Rating
 from django.forms import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from datetime import date
+from decimal import *
 import logging
 import math
 logger = logging.getLogger(__name__)
@@ -206,9 +207,20 @@ class OrderDetail(LoginRequiredMixin, DetailView):
         context = super(OrderDetail, self).get_context_data(**kwargs)
         costs, emails = participant_information(self.object)
         costs = add_costs_equally(costs, self.object.remainding_balance)
+        costs, shipping_cost_required = add_shipping_cost(costs, self.object.cost())
+
         context['costs'] = round_participant_costs(costs)
         context['emails'] = emails
+        context['shipping_cost_required'] = shipping_cost_required
         return context
+
+def add_shipping_cost(costs, order_cost):
+    shipping_cost_required = False
+    res = costs
+    if order_cost < 500:
+        shipping_cost_required = True
+        res = add_costs_equally(costs, 49)
+    return res, shipping_cost_required
 
 def participant_information(order):
     items = OrderItem.objects.filter(order__id=order.id)
@@ -233,7 +245,7 @@ def add_costs_equally(costs, extra_cost):
     if len(costs) == 0:
         return costs
     r = extra_cost / len(costs)
-    return list(map(lambda t: (t[0], t[1] + r), costs))
+    return list(map(lambda t: (t[0], t[1] + Decimal(r)), costs))
 
 class OrderCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Order
