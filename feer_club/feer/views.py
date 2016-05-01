@@ -280,7 +280,11 @@ class OrderItemCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = "feer.add_orderitem"
 
     def form_valid(self, form):
-        form.instance.order = Order.objects.get(pk=self.kwargs['pk'])
+        order = Order.objects.get(pk=self.kwargs['pk'])
+        if order.updatable == False:
+            return HttpResponseBadRequest('order is not updatable')
+
+        form.instance.order = order
         form.save()
         return HttpResponseRedirect(reverse_lazy('order_detail',
             kwargs={'pk': form.instance.order.pk}))
