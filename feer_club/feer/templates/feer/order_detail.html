@@ -48,7 +48,11 @@
     </tr>
   {% for item in order.orderitem_set.all %}
     <tr class="accordian-toggle visible-row" data-toggle="collapse" data-target="#item{{ item.id }}">
-      <td><input type="checkbox" name="{{ item.id }}" onchange="checkboxChanged(this)" {% if user in item.participants.all %}checked{% endif %}></td>
+      <td>
+      {% if order.updatable %}
+        <input type="checkbox" name="{{ item.id }}" onchange="checkboxChanged(this)" {% if user in item.participants.all %}checked{% endif %}>
+      {% endif %}
+      </td>
       <td>{{ item.quantity }}</td>
       <td><a href="{% url 'beer_detail' item.beer.id %}">{{ item.beer.name }}</a></td>
       <td>{{ item.beer.volume }}</td>
@@ -57,8 +61,16 @@
       <td>{{ item.drink_date }}</td>
       <td class="table-number">{{ item.beer.price }}</td>
       <td class="table-number"><a href="{{ item.beer.purchase_url }}"> {{ item.cost }} </a></td>
-      <td><a href="{% url 'orderitem_update' order_pk=order.pk pk=item.pk %}"><i class="fa fa-pencil warning"></i></a></td>
-      <td><a href="{% url 'orderitem_delete' order_pk=order.pk pk=item.pk %}"><i class="fa fa-trash danger"></i></a></td>
+      <td>
+      {% if order.updatable %}
+        <a href="{% url 'orderitem_update' order_pk=order.pk pk=item.pk %}"><i class="fa fa-pencil warning"></i></a>
+      {% endif %}
+      </td>
+      <td>
+      {% if order.updatable %}
+        <a href="{% url 'orderitem_delete' order_pk=order.pk pk=item.pk %}"><i class="fa fa-trash danger"></i></a>
+      {% endif %}
+      </td>
     </tr>
     <tr class="hidden-row">
       <td colspan="10" class="hidden-row">
