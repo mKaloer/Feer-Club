@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView,
     DeleteView)
@@ -41,7 +41,7 @@ def edit_my_participation(request, pk):
     order_item = OrderItem.objects.get(id=order_item_id)
     order = Order.objects.get(id=order_item.order.id)
     if order.updatable == False:
-        return HttpResponse('order is not updatable')
+        return HttpResponseBadRequest('order is not updatable')
 
     if checked == 'true':
         order_item.participants.add(request.user)
