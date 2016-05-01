@@ -19,6 +19,14 @@
     <input class="form-control" placeholder="Remainding balance" type="number" name="remainding_balance" value="{{ order.remainding_balance }}">
   </div>
   <div class="input-group">
+    <span class="input-group-addon" id="basic-addon1">Shipping fee</span>
+    <input class="form-control" placeholder="Shipping fee" type="number" name="shipping_fee" value="{{ order.shipping_fee }}">
+  </div>
+  <div class="input-group">
+    <span class="input-group-addon" id="basic-addon1">Cost before free shipping</span>
+    <input class="form-control" placeholder="Cost before free shipping" type="number" name="cost_for_free_shipping" value="{{ order.cost_for_free_shipping }}">
+  </div>
+  <div class="input-group">
     <div class="checkbox">
       <label for="id_updatable">
       <input class="" id="id_updatable" name="updatable" type="checkbox" {% if order.updatable %}checked{% endif %}/> Updatable</label>

@@ -210,19 +210,19 @@ class OrderDetail(LoginRequiredMixin, DetailView):
         context = super(OrderDetail, self).get_context_data(**kwargs)
         costs, emails = participant_information(self.object)
         costs = add_costs_equally(costs, self.object.remainding_balance)
-        costs, shipping_cost_required = add_shipping_cost(costs, self.object.cost())
+        costs, shipping_cost_required = add_shipping_cost(costs, self.object)
 
         context['costs'] = round_participant_costs(costs)
         context['emails'] = emails
         context['shipping_cost_required'] = shipping_cost_required
         return context
 
-def add_shipping_cost(costs, order_cost):
+def add_shipping_cost(costs, order):
     shipping_cost_required = False
     res = costs
-    if order_cost < 500:
+    if order.cost() < order.cost_for_free_shipping:
         shipping_cost_required = True
-        res = add_costs_equally(costs, 49)
+        res = add_costs_equally(costs, order.shipping_fee)
     return res, shipping_cost_required
 
 def participant_information(order):
@@ -252,7 +252,8 @@ def add_costs_equally(costs, extra_cost):
 
 class OrderCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Order
-    fields = ['name', 'order_date', 'remainding_balance']
+    fields = ['name', 'order_date', 'remainding_balance', 'shipping_fee',
+            'cost_for_free_shipping', 'updatable']
     login_url = reverse_lazy('login')
     permission_required = "feer.add_order"
 
@@ -263,7 +264,8 @@ class OrderCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
 class OrderUpdate(LoginRequiredMixin, PermissionRequiredMixin, NonOverwritingUpdateView):
     model = Order
-    fields = ['name', 'order_date', 'remainding_balance', 'updatable']
+    fields = ['name', 'order_date', 'remainding_balance', 'shipping_fee',
+            'cost_for_free_shipping', 'updatable']
     login_url = reverse_lazy('login')
     permission_required = "feer.change_order"
 
