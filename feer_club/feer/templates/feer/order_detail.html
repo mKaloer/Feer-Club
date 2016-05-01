@@ -27,9 +27,11 @@
     {{ order.name }}: <b>{{ order.cost }} DKK</b>
     {% if order.remainding_balance > 0 %}, Remaining payment from last order: <b>{{ order.remainding_balance }} DKK</b>{% endif %}
     {% if shipping_cost_required %}, Shipping fee: <b>49 DKK</b>{% endif %}
+  {% if order.updatable %}
     <span style="float:right">
       <a href="{% url 'orderitem_create' order.id %}">Add beer to order</a>
     </span>
+  {% endif %}
   </div>
 
   <table class="table table-hover" style="border-collapse:collapse;">
