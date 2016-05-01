@@ -290,6 +290,13 @@ class OrderItemUpdate(LoginRequiredMixin, NonOverwritingUpdateView):
     fields = ['beer', 'quantity', 'drink_date']
     login_url = reverse_lazy('login')
 
+    def form_valid(self, form):
+        order = Order.objects.get(id=self.object.order.id)
+        if order.updatable == False:
+            return HttpResponseBadRequest('order is not updatable')
+        return HttpResponseRedirect(reverse_lazy('order_detail',
+            kwargs={'pk': self.object.order.pk}))
+
     def get_success_url(self):
         return reverse_lazy('order_detail', kwargs={'pk': self.object.order.pk})
 
@@ -297,6 +304,13 @@ class OrderItemDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = OrderItem
     login_url = reverse_lazy('login')
     permission_required = "feer.delete_orderitem"
+
+    def form_valid(self, form):
+        order = Order.objects.get(id=self.object.order.id)
+        if order.updatable == False:
+            return HttpResponseBadRequest('order is not updatable')
+        return HttpResponseRedirect(reverse_lazy('order_detail',
+            kwargs={'pk': self.object.order.pk}))
 
     def get_success_url(self):
         return reverse_lazy('order_detail', kwargs={'pk': self.object.order.pk})
