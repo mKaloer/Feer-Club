@@ -59,6 +59,7 @@ class Order(models.Model):
     beers = models.ManyToManyField(Beer, through='OrderItem')
     order_date = models.DateField('order date')
     remainding_balance = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    updatable = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

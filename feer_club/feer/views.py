@@ -39,6 +39,9 @@ def edit_my_participation(request, pk):
     order_item_id = request.POST['order_item_id']
     checked = request.POST['checked']
     order_item = OrderItem.objects.get(id=order_item_id)
+    order = Order.objects.get(id=order_item.order.id)
+    if order.updatable == False:
+        return HttpResponse('order is not updatable')
 
     if checked == 'true':
         order_item.participants.add(request.user)
@@ -260,7 +263,7 @@ class OrderCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
 class OrderUpdate(LoginRequiredMixin, PermissionRequiredMixin, NonOverwritingUpdateView):
     model = Order
-    fields = ['name', 'order_date', 'remainding_balance']
+    fields = ['name', 'order_date', 'remainding_balance', 'updatable']
     login_url = reverse_lazy('login')
     permission_required = "feer.change_order"
 

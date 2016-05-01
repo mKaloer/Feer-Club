@@ -16,7 +16,13 @@
   </div>
   <div class="input-group">
     <span class="input-group-addon" id="basic-addon1">Remainding balance</span>
-    <input class="form-control" placeholder="Order date" type="number" name="remainding_balance" value="{{ order.remainding_balance }}">
+    <input class="form-control" placeholder="Remainding balance" type="number" name="remainding_balance" value="{{ order.remainding_balance }}">
+  </div>
+  <div class="input-group">
+    <div class="checkbox">
+      <label for="id_updatable">
+      <input class="" id="id_updatable" name="updatable" type="checkbox" {% if order.updatable %}checked{% endif %}/> Updatable</label>
+    </div>
   </div>
 
   {% buttons %}
