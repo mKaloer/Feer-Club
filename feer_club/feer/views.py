@@ -300,6 +300,8 @@ class OrderItemUpdate(LoginRequiredMixin, NonOverwritingUpdateView):
         order = Order.objects.get(id=self.object.order.id)
         if order.updatable == False:
             return HttpResponseBadRequest('order is not updatable')
+
+        form.save();
         return HttpResponseRedirect(reverse_lazy('order_detail',
             kwargs={'pk': self.object.order.pk}))
 
@@ -315,6 +317,8 @@ class OrderItemDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
         order = Order.objects.get(id=self.object.order.id)
         if order.updatable == False:
             return HttpResponseBadRequest('order is not updatable')
+
+        form.save();
         return HttpResponseRedirect(reverse_lazy('order_detail',
             kwargs={'pk': self.object.order.pk}))
 
